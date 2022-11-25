@@ -1,6 +1,6 @@
 <template>
 <div class="app">
-  <post-form />
+  <post-form @createPost="addPost" />
   <post-list :posts="posts" />
 </div>
 </template>
@@ -23,27 +23,12 @@ export default {
         {id: 5, title: 'Post 5', body: 'This is post 5'},
         {id: 6, title: 'Post 6', body: 'This is post 6'},
       ],
-      title: '',
-      body: '',
     }
   },
   methods: {
-    createPost(event) {
-      event.stopPropagation()
-
-      const newPost = {
-        id: Date.now(),
-        title: this.title,
-        body: this.body
-      }
-
-      this.posts.push(newPost);
-      this.resetForm()
+    addPost(post) {
+      this.posts.push(post);
     },
-    resetForm() {
-      this.title = '';
-      this.body = '';
-    }
   }
 }
 </script>
