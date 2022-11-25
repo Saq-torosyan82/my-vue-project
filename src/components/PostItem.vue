@@ -5,14 +5,21 @@
       <div><strong>Body:</strong> {{ post.body }}</div>
     </div>
     <div class="post__btns">
-      <button>Delete</button>
+      <my-button>
+        Delete
+      </my-button>
     </div>
   </div>
 </template>
 
 <script>
+import MyButton from "@/components/UI/MyButton";
+
 export default {
   name: "PostItem",
+  components: {
+    MyButton
+  },
   props: {
     post: {
       type: Object,

@@ -4,14 +4,21 @@
       <h4>Create Post</h4>
       <input v-model="post.title" class="input" type="text" placeholder="Title">
       <input v-model="post.body" class="input" type="text" placeholder="Body">
-      <button class="btn" @click="createPost">Create</button>
+      <my-button style="align-self: flex-end; margin-top: 15px;" @click="createPost">
+        Create
+      </my-button>
     </form>
   </div>
 </template>
 
 <script>
+import MyButton from "@/components/UI/MyButton";
+
 export default {
   name: "PostForm",
+  components: {
+    MyButton
+  },
   data() {
     return {
       post: {
@@ -47,15 +54,5 @@ form {
   border: 1px solid teal;
   padding: 10px 15px;
   margin-top: 15px;
-}
-
-.btn {
-  margin-top: 15px;
-  align-self: flex-end;
-  padding: 10px 15px;
-  background: none;
-  border: 1px solid teal;
-  cursor: pointer;
-  color: teal;
 }
 </style>
