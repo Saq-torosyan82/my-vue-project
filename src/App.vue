@@ -1,12 +1,18 @@
 <template>
 <div>
-  Hello !!!!
+  <div>Likes count:  <strong>{{ likes }}</strong></div>
+  <div>Dislikes count:  <strong>{{ dislikes }}</strong></div>
 </div>
 </template>
 
 <script>
 export default {
-  name: "App"
+  data() {
+    return {
+      likes: 0,
+      dislikes: 0,
+    }
+  }
 }
 </script>
 
