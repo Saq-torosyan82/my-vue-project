@@ -1,6 +1,10 @@
 <template>
 <div class="app">
-  <post-form @createPost="addPost" />
+  <h1>Posts page</h1>
+  <my-button @click="showDialog" style="margin: 15px 0">Create Post</my-button>
+  <my-dialog v-model:show="dialogVisible">
+    <post-form @createPost="addPost" />
+  </my-dialog>  
   <post-list :posts="posts" @remove="removePost" />
 </div>
 </template>
@@ -24,15 +28,20 @@ export default {
         {id: 5, title: 'Post 5', body: 'This is post 5'},
         {id: 6, title: 'Post 6', body: 'This is post 6'},
       ],
+      dialogVisible: false,
     }
   },
   methods: {
     addPost(post) {
       this.posts.push(post);
+      this.dialogVisible = false;
     },
     removePost(post) {
       this.posts = this.posts.filter(p => p.id !== post.id);
     },
+    showDialog() {
+      this.dialogVisible = true;
+    }
   }
 }
 </script>
