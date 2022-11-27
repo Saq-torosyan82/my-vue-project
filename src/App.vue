@@ -5,13 +5,15 @@
   <my-dialog v-model:show="dialogVisible">
     <post-form @createPost="addPost" />
   </my-dialog>  
-  <post-list :posts="posts" @remove="removePost" />
+  <post-list v-if="!isPostsLoading" :posts="posts" @remove="removePost" />
+  <div v-else>Loading posts ...</div>
 </div>
 </template>
 
 <script>
 import PostList from "@/components/PostList";
 import PostForm from "@/components/PostForm";
+import axios from "axios";
 
 export default {
   components: {
@@ -20,15 +22,9 @@ export default {
   },
   data() {
     return {
-      posts: [
-        {id: 1, title: 'Post 1', body: 'This is post 1'},
-        {id: 2, title: 'Post 2', body: 'This is post 2'},
-        {id: 3, title: 'Post 3', body: 'This is post 3'},
-        {id: 4, title: 'Post 4', body: 'This is post 4'},
-        {id: 5, title: 'Post 5', body: 'This is post 5'},
-        {id: 6, title: 'Post 6', body: 'This is post 6'},
-      ],
+      posts: [],
       dialogVisible: false,
+      isPostsLoading: false,
     }
   },
   methods: {
@@ -41,7 +37,21 @@ export default {
     },
     showDialog() {
       this.dialogVisible = true;
+    },
+    async fetchPosts() {
+      try {
+        this.isPostsLoading = true
+        const response = await axios.get("https://jsonplaceholder.typicode.com/posts?_limit=10");
+        this.posts = response.data;        
+      } catch (err) {
+        alert("Error")
+      } finally {
+        this.isPostsLoading = false;
+      }
     }
+  },
+  mounted() {
+    this.fetchPosts();
   }
 }
 </script>
