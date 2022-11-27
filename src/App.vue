@@ -1,13 +1,14 @@
 <template>
 <div class="app">
   <post-form @createPost="addPost" />
-  <post-list :posts="posts" />
+  <post-list :posts="posts" @remove="removePost" />
 </div>
 </template>
 
 <script>
 import PostList from "@/components/PostList";
 import PostForm from "@/components/PostForm";
+
 export default {
   components: {
     PostList,
@@ -28,6 +29,9 @@ export default {
   methods: {
     addPost(post) {
       this.posts.push(post);
+    },
+    removePost(post) {
+      this.posts = this.posts.filter(p => p.id !== post.id);
     },
   }
 }
