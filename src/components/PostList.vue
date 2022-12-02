@@ -27,9 +27,10 @@ export default {
 </script>
 
 <style scoped>
+.posts-list-move,
 .posts-list-enter-active,
 .posts-list-leave-active {
-  transition: all 0.5s ease;
+  transition: all 0.4s ease;
 }
 .posts-list-enter-from,
 .posts-list-leave-to {
