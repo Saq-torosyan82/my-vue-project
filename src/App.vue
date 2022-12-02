@@ -15,6 +15,17 @@
   </my-dialog>  
   <post-list v-if="!isPostsLoading" :posts="sortedAndSearchedPosts" @remove="removePost" />
   <div v-else>Loading posts ...</div>
+  <div class="page__wrapper">
+    <div
+     v-for="pageNum in totalPages"
+     :key="pageNum"
+     class="page"
+     :class="{current_page: pageNum === page}"
+     @click="changePage(pageNum)"
+    >
+      {{ pageNum }}
+    </div>
+  </div>
 </div>
 </template>
 
@@ -35,6 +46,9 @@ export default {
       isPostsLoading: false,
       selectedSort: '',
       searchTerm: '',
+      page: 1,
+      limit: 10,
+      totalPages: 0,
       sortOptions: [
         {value: 'title', name: 'Sort by title'},
         {value: 'body', name: 'Sort by body'}
@@ -52,10 +66,20 @@ export default {
     showDialog() {
       this.dialogVisible = true;
     },
+    changePage(pageNum) {
+      this.page = pageNum;
+      // this.fetchPosts();
+    },
     async fetchPosts() {
       try {
         this.isPostsLoading = true
-        const response = await axios.get("https://jsonplaceholder.typicode.com/posts?_limit=10");
+        const response = await axios.get("https://jsonplaceholder.typicode.com/posts", {
+          params: {
+            _page: this.page,
+            _limit: this.limit
+          }
+        });
+        this.totalPages = Math.ceil(response.headers['x-total-count'] / this.limit);
         this.posts = response.data;        
       } catch (err) {
         alert("Error")
@@ -72,7 +96,12 @@ export default {
       return [...this.posts.sort((post1, post2) => post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]))]
     },
     sortedAndSearchedPosts() {
-      return this.sortedPosts.filter(post => post.title.toLowercase().includes(this.searchTerm.toLowercase()))
+      return this.sortedPosts.filter(post => post.title.toLowerCase().includes(this.searchTerm.toLowerCase()))
+    }
+  },
+  watch: {
+    page() {
+      this.fetchPosts();
     }
   }
 }
@@ -93,5 +122,21 @@ export default {
   margin: 15px 0;
   display: flex;
   justify-content: space-between;
+}
+
+.page__wrapper {
+  display: flex;
+  margin-top: 15px;
+}
+
+.page {
+  border: 1px solid black;
+  padding: 10px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.current_page {
+  border: 2px solid teal;
 }
 </style>
